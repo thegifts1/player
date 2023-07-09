@@ -1,8 +1,5 @@
 <?php
-ini_set('display_errors', 0);
-
 require_once(__DIR__ . "/getID3-master/getid3/getid3.php");
-const CSS_URL = "css/style.min.css";
 
 $getID3 = new getID3;
 $getID3->encoding = "UTF-8";
@@ -31,12 +28,19 @@ for ($i = 0; $i < $countedFiles; $i++) {
     array_push($arrayForCheck, $i);
 }
 
+if(isset($_POST["id"])) {
+    setcookie("id_next_song", $_POST["id"], 0, "/");
+    header("Location:http://openserver");
+    unset($_POST);
+    header("Refresh:0");
+}
+
 $i = 1;
 while ($i < $countedFiles) {
-    if ($_POST["id"] == $arrayForCheck[$i]) {
+    if ($_COOKIE["id_next_song"] == $arrayForCheck[$i]) {
         $nowPlaying = $arratWithSongsInfo[$i]["filename"];
         break;
-    }
+    } 
     $i++;
 }
 ?>
@@ -49,7 +53,7 @@ while ($i < $countedFiles) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Songs</title>
-    <link rel="stylesheet" href="<?= CSS_URL ?>">
+    <link rel="stylesheet" href="css/style.min.css">
     <link rel="stylesheet" href="plyr-master/dist/plyr.css">
     <link rel="icon" href="img\svg\headphones-ico.svg" type="image/svg+xml">
 </head>
@@ -85,10 +89,14 @@ while ($i < $countedFiles) {
     <script src="plyr-master/dist/plyr.min.js"></script>
     <script>
         const player = new Plyr("#player");
+
         var endSong = document.getElementById("player");
-        endSong.onended = function() {
-            alert("Песня закончилась");
-        };
+        endSong.onended = function () {
+            setTimeout(function () {
+                document.cookie = "id_next_song=<?= $_COOKIE["id_next_song"] + 1 ?>";
+                location.reload();
+            }, 300);
+        }; 
     </script>
 </body>
 
