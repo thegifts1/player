@@ -1,4 +1,6 @@
 <?php
+ini_set('display_errors', 0);
+
 require_once(__DIR__ . "/getID3-master/getid3/getid3.php");
 
 $getID3 = new getID3;
