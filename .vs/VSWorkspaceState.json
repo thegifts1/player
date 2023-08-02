@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\database",
+    "\\database\\migrations",
+    "\\resources",
+    "\\resources\\js",
+    "\\resources\\views",
+    "\\resources\\views\\addMusic",
+    "\\resources\\views\\login",
+    "\\resources\\views\\music",
+    "\\resources\\views\\register"
+  ],
+  "SelectedNode": "\\app\\Http\\Controllers\\LoginController.php",
+  "PreviewInSolutionExplorer": false
+}
