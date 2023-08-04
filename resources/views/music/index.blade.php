@@ -70,28 +70,32 @@
         @endphp
 
         <div class="now_play">
-            {{ __('Now playing:') }}
+            {{ __('Now playing: ') }}
             <?= $nowPlaying ?>
         </div>
-        <audio controls autoplay id="player" class="player"
-            src="../storage/app/UsersMusic/<?= Auth::user()->name . '/' . $nowPlaying ?>"></audio>
+        <img id="pastSong" class="arrow" src="img/svg/left-arrow.svg" alt="left">
+        <img id="nextSong" class="arrow" src="img/svg/right-arrow.svg" alt="right">
+        <div id="player_container">
+            <audio controls autoplay id="player" class="player"
+                src="../storage/app/UsersMusic/<?= Auth::user()->name . '/' . $nowPlaying ?>"></audio>
+        </div>
         <table class="music_table">
             <tr class="music_head">
-                <td class="music_center">{{ __('Play') }}</td>
+                <td>{{ __('Play') }}</td>
                 <td>{{ __('Name') }}</td>
-                <td class="music_center">{{ __('Duration') }}</td>
+                <td>{{ __('Duration') }}</td>
             </tr>
             <?php for ($i = 1; $i < $countedFiles; $i++): ?>
             <tr>
-                <td class="music_center">
-                    <form action="music" method="GET">
+                <td>
+                    <form method="GET">
                         <input name="id" type="submit" value="<?= $i ?>">
                     </form>
                 </td>
                 <td id="<?= $i ?>">
                     <?= $arrayWithSongsInfo[$i]['filename'] ?>
                 </td>
-                <td class="music_center">
+                <td>
                     <?= $arrayWithSongsInfo[$i]['playtime_string'] ?>
                 </td>
             </tr>
@@ -108,7 +112,44 @@
 
         @section('js')
             <script>
-                const player=new Plyr("#player");var arrayWithSongsName=[];for(let i=0;i<<?=$countedFiles?>;i++)arrayWithSongsName[i]=document.getElementById(i);var counter=<?=$_COOKIE['idSong']?>,changeSong=document.getElementById("player");changeSong.onended=function(){setTimeout(function(){document.getElementsByClassName("now_play")[0].textContent=arrayWithSongsName[counter].innerText,document.getElementsByClassName("player")[0].src="../storage/app/UsersMusic/<?= Auth::user()->name ?>/"+arrayWithSongsName[counter].innerText,counter++},1)};
+                const player = new Plyr("#player");
+
+                var arrayWithSongsName = [];
+                for (let i = 0; i < <?= $countedFiles ?>; i++) {
+                    arrayWithSongsName[i] = document.getElementById(i);
+                };
+
+                var counter = <?= $_COOKIE['idSong'] ?>;
+                var nowPlay = "Now playing: "
+                
+                changeSong = document.getElementById("player");
+                changeSong.onended = function() {
+                    counter++;
+                    document.getElementsByClassName("now_play")[0].textContent = nowPlay + arrayWithSongsName[counter].innerText;
+                    document.getElementsByClassName("player")[0].src = "../storage/app/UsersMusic/<?= Auth::user()->name ?>/" +
+                        arrayWithSongsName[counter].innerText;
+                    document.cookie = "idSong=" + counter;
+                };
+
+                next = function() {
+                    counter++;
+                    document.getElementsByClassName("now_play")[0].textContent = nowPlay + arrayWithSongsName[counter].innerText;
+                    document.getElementsByClassName("player")[0].src = "../storage/app/UsersMusic/<?= Auth::user()->name ?>/" +
+                        arrayWithSongsName[counter].innerText;
+                    document.cookie = "idSong=" + counter;
+                };
+                var nextSong = document.getElementById('nextSong');
+                nextSong.addEventListener('click', next);
+
+                past = function() {
+                    counter--;
+                    document.getElementsByClassName("now_play")[0].textContent = nowPlay + arrayWithSongsName[counter].innerText;
+                    document.getElementsByClassName("player")[0].src = "../storage/app/UsersMusic/<?= Auth::user()->name ?>/" +
+                        arrayWithSongsName[counter].innerText;
+                    document.cookie = "idSong=" + counter;
+                };
+                var pastSong = document.getElementById('pastSong');
+                pastSong.addEventListener('click', past);
             </script>
         @endsection
     @endauth

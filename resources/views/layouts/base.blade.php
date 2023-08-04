@@ -7,7 +7,7 @@
 
     <title>@yield('title', config('app.name'))</title>
 
-    <link rel="icon" href="img/svg/headphones-ico.svg" type="image/svg+xml">
+    <link rel="icon" href="img/svg/headphones.svg" type="image/svg+xml">
 
     @yield('plyr.css')
     @yield('loginRegister.css')
