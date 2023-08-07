@@ -21,15 +21,15 @@ class RegisterController extends Controller
             'password' => ['required', 'string', 'min:7', 'max:200', 'confirmed'],
         ]);
 
+        if (!is_dir('../storage/app/UsersMusic/')) {
+            mkdir('../storage/app/UsersMusic/');
+        }
+
         $user = User::query()->create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => $validated['password'],
         ]);
-
-        if (!is_dir('../storage/app/UsersMusic/')) {
-            mkdir('../storage/app/UsersMusic/');
-        }
 
         mkdir('../storage/app/UsersMusic/' . $user['name']);
 
@@ -38,12 +38,6 @@ class RegisterController extends Controller
 
             return redirect()->route('home.index');
         }
-
-        // $user = new User;
-        // $user->name = $validated['name'];
-        // $user->email = $validated['email'];
-        // $user->password = $validated['password'];
-        // $user->save();
 
         return redirect()->route('register.index')->withErrors('Something went wrong');
     }

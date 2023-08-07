@@ -40,8 +40,8 @@ class AddMusicController extends Controller
 
                 $file_name = $request->file('fileUpload')[$i]->getClientOriginalName();
 
-                for ($i_check = 0; $i_check < $check_count; $i_check++) {
-                    if ($check[$i_check]['name'] == $user['name'] && $check[$i_check]['track_name'] == $file_name) {
+                for ($i2 = 0; $i2 < $check_count; $i2++) {
+                    if ($check[$i2]['name'] == $user['name'] && $check[$i2]['track_name'] == $file_name) {
                         return redirect()->route('addMusic.index')->withErrors('You have already added a file with this name: ' . $file_name);
                     }
                 }

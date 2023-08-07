@@ -112,44 +112,11 @@
 
         @section('js')
             <script>
-                const player = new Plyr("#player");
-
-                var arrayWithSongsName = [];
-                for (let i = 0; i < <?= $countedFiles ?>; i++) {
-                    arrayWithSongsName[i] = document.getElementById(i);
-                };
-
-                var counter = <?= $_COOKIE['idSong'] ?>;
-                var nowPlay = "Now playing: "
-                
-                changeSong = document.getElementById("player");
-                changeSong.onended = function() {
-                    counter++;
-                    document.getElementsByClassName("now_play")[0].textContent = nowPlay + arrayWithSongsName[counter].innerText;
-                    document.getElementsByClassName("player")[0].src = "../storage/app/UsersMusic/<?= Auth::user()->name ?>/" +
-                        arrayWithSongsName[counter].innerText;
-                    document.cookie = "idSong=" + counter;
-                };
-
-                next = function() {
-                    counter++;
-                    document.getElementsByClassName("now_play")[0].textContent = nowPlay + arrayWithSongsName[counter].innerText;
-                    document.getElementsByClassName("player")[0].src = "../storage/app/UsersMusic/<?= Auth::user()->name ?>/" +
-                        arrayWithSongsName[counter].innerText;
-                    document.cookie = "idSong=" + counter;
-                };
-                var nextSong = document.getElementById('nextSong');
-                nextSong.addEventListener('click', next);
-
-                past = function() {
-                    counter--;
-                    document.getElementsByClassName("now_play")[0].textContent = nowPlay + arrayWithSongsName[counter].innerText;
-                    document.getElementsByClassName("player")[0].src = "../storage/app/UsersMusic/<?= Auth::user()->name ?>/" +
-                        arrayWithSongsName[counter].innerText;
-                    document.cookie = "idSong=" + counter;
-                };
-                var pastSong = document.getElementById('pastSong');
-                pastSong.addEventListener('click', past);
+const player=new Plyr("#player");var arrayWithSongsName=[];for(let i=0;i<<?=$countedFiles?>;i++){arrayWithSongsName[i]=document.getElementById(i);};var counter=<?=$_COOKIE['idSong']?>;var nowPlay="Now playing: "
+changeSong=document.getElementById("player");changeSong.onended=function(){counter++;document.getElementsByClassName("now_play")[0].textContent=nowPlay+arrayWithSongsName[counter].innerText;document.getElementsByClassName("player")[0].src="../storage/app/UsersMusic/<?= Auth::user()->name ?>/"+
+arrayWithSongsName[counter].innerText;document.cookie="idSong="+counter;};next=function(){counter++;document.getElementsByClassName("now_play")[0].textContent=nowPlay+arrayWithSongsName[counter].innerText;document.getElementsByClassName("player")[0].src="../storage/app/UsersMusic/<?= Auth::user()->name ?>/"+
+arrayWithSongsName[counter].innerText;document.cookie="idSong="+counter;};var nextSong=document.getElementById('nextSong');nextSong.addEventListener('click',next);past=function(){counter--;document.getElementsByClassName("now_play")[0].textContent=nowPlay+arrayWithSongsName[counter].innerText;document.getElementsByClassName("player")[0].src="../storage/app/UsersMusic/<?= Auth::user()->name ?>/"+
+arrayWithSongsName[counter].innerText;document.cookie="idSong="+counter;};var pastSong=document.getElementById('pastSong');pastSong.addEventListener('click',past);
             </script>
         @endsection
     @endauth
