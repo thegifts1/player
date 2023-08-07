@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use getID3;
 use App\Models\Music;
 use App\Models\User;
-use getID3;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;

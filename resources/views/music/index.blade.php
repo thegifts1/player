@@ -9,60 +9,29 @@
 
     @auth
         @php
-            $getID3 = new getID3();
-            $getID3->encoding = 'UTF-8';
-            
-            $fileName = '';
+            $counter++;
             $nowPlaying = '';
-            
-            $arrayWithSongsInfo = [];
-            $arrayWithSong = [];
-            
-            $ThisFileInfo = [];
             $arrayForCheck = [];
             
-            $countedFiles = 1;
-            
             if (!isset($_COOKIE['idSong'])) {
-                $_COOKIE['idSong'] = 0;
+                $_COOKIE['idSong'] = 9999;
             }
             
-            if ($handle = opendir('../storage/app/UsersMusic/' . Auth::user()->name)) {
-                while (false !== ($fileName = readdir($handle))) {
-                    if ($fileName != '.' && $fileName != '..') {
-                        $ThisFileInfo = $getID3->analyze('../storage/app/UsersMusic/' . Auth::user()->name . '/' . $fileName);
-            
-                        $arrayWithSong = [
-                            'filename' => $ThisFileInfo['filename'],
-                            'playtime_string' => $ThisFileInfo['playtime_string'],
-                        ];
-            
-                        array_push($arrayWithSongsInfo, $arrayWithSong);
-            
-                        $countedFiles++;
-                    }
-                }
-                array_unshift($arrayWithSongsInfo, 0);
-                closedir($handle);
-            } else {
-                return redirect()->route('music.index', 'Something went wrong');
-            }
-            
-            for ($i = 0; $i < $countedFiles; $i++) {
+            for ($i = 0; $i < $counter; $i++) {
                 array_push($arrayForCheck, $i);
             }
             
             if (isset($_GET['id'])) {
                 setcookie('idSong', $_GET['id'], 0, '/public');
                 unset($_GET['id']);
-                header('Location:http://openserver/public/music');
+                header("Location:http://openserver/public/music");
                 exit();
             }
             
             $i = 1;
-            while ($i < $countedFiles) {
+            while ($i < $counter) {
                 if ($_COOKIE['idSong'] == $arrayForCheck[$i]) {
-                    $nowPlaying = $arrayWithSongsInfo[$i]['filename'];
+                    $nowPlaying = $songs[$i]['track_name'];
                     break;
                 }
                 $i++;
@@ -85,7 +54,7 @@
                 <td>{{ __('Name') }}</td>
                 <td>{{ __('Duration') }}</td>
             </tr>
-            <?php for ($i = 1; $i < $countedFiles; $i++): ?>
+            <?php for ($i = 1; $i < $counter; $i++): ?>
             <tr>
                 <td>
                     <form method="GET">
@@ -93,10 +62,10 @@
                     </form>
                 </td>
                 <td id="<?= $i ?>">
-                    <?= $arrayWithSongsInfo[$i]['filename'] ?>
+                    <?= $songs[$i]['track_name'] ?>
                 </td>
                 <td>
-                    <?= $arrayWithSongsInfo[$i]['playtime_string'] ?>
+                    <?= $songs[$i]['duration'] ?>
                 </td>
             </tr>
             <?php endfor; ?>
@@ -112,7 +81,7 @@
 
         @section('js')
             <script>
-const player=new Plyr("#player");var arrayWithSongsName=[];for(let i=0;i<<?=$countedFiles?>;i++){arrayWithSongsName[i]=document.getElementById(i);};var counter=<?=$_COOKIE['idSong']?>;var nowPlay="Now playing: "
+const player=new Plyr("#player");var arrayWithSongsName=[];for(let i=0;i<<?=$counter?>;i++){arrayWithSongsName[i]=document.getElementById(i);};var counter=<?=$_COOKIE['idSong']?>;var nowPlay="Now playing: "
 changeSong=document.getElementById("player");changeSong.onended=function(){counter++;document.getElementsByClassName("now_play")[0].textContent=nowPlay+arrayWithSongsName[counter].innerText;document.getElementsByClassName("player")[0].src="../storage/app/UsersMusic/<?= Auth::user()->name ?>/"+
 arrayWithSongsName[counter].innerText;document.cookie="idSong="+counter;};next=function(){counter++;document.getElementsByClassName("now_play")[0].textContent=nowPlay+arrayWithSongsName[counter].innerText;document.getElementsByClassName("player")[0].src="../storage/app/UsersMusic/<?= Auth::user()->name ?>/"+
 arrayWithSongsName[counter].innerText;document.cookie="idSong="+counter;};var nextSong=document.getElementById('nextSong');nextSong.addEventListener('click',next);past=function(){counter--;document.getElementsByClassName("now_play")[0].textContent=nowPlay+arrayWithSongsName[counter].innerText;document.getElementsByClassName("player")[0].src="../storage/app/UsersMusic/<?= Auth::user()->name ?>/"+
