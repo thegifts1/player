@@ -16,12 +16,16 @@ class MusicController extends Controller
         $counter = 0;
 
         $user = new User;
-        if (isset($user['name'])) {
+        $user = Auth::user();
+
+        if (isset($user)) {
             $user->name = Auth::user()->name;
 
             $songs_db = Music::query()->get(['name', 'track_name', 'duration']);
             $count = count($songs_db);
 
+            $songs = [];
+            
             for ($i = 0; $i < $count; $i++) {
                 if (isset($songs_db[$i])) {
                     if ($user['name'] == $songs_db[$i]['name']) {

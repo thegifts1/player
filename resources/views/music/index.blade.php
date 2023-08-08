@@ -24,7 +24,7 @@
             if (isset($_GET['id'])) {
                 setcookie('idSong', $_GET['id'], 0, '/public');
                 unset($_GET['id']);
-                header("Location:http://openserver/public/music");
+                header("Location:http://site/public/music");
                 exit();
             }
             
