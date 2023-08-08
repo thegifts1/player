@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\getID3\getid3;
+use getID3;
 use App\Models\Music;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -27,7 +27,7 @@ class AddMusicController extends Controller
 
             $file_count = count($request->file('fileUpload'));
 
-            $getID3 = new \getID3();
+            $getID3 = new getID3();
             $getID3->encoding = 'UTF-8';
 
             $check = Music::query()->get(['name', 'track_name']);
