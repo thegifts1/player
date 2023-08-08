@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use getID3;
+require_once '/var/www/html/app/getID3/getid3/getid3.php';
+
 use App\Models\Music;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -27,7 +28,7 @@ class AddMusicController extends Controller
 
             $file_count = count($request->file('fileUpload'));
 
-            $getID3 = new getID3();
+            $getID3 = new \getID3();
             $getID3->encoding = 'UTF-8';
 
             $check = Music::query()->get(['name', 'track_name']);
@@ -39,6 +40,11 @@ class AddMusicController extends Controller
                 $ThisFileInfo = $getID3->analyze($uploadedFile);
 
                 $file_name = $request->file('fileUpload')[$i]->getClientOriginalName();
+
+                dump($file_name);
+                dump($request);
+                dump($uploadedFile);
+                dd($ThisFileInfo);
 
                 for ($i2 = 0; $i2 < $check_count; $i2++) {
                     if ($check[$i2]['name'] == $user['name'] && $check[$i2]['track_name'] == $file_name) {
