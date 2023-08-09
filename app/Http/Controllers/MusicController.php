@@ -12,7 +12,7 @@ class MusicController extends Controller
 {
     public function index()
     {
-        $songs = 0;
+        $songs = [];
         $counter = 0;
 
         $user = new User;
@@ -24,8 +24,6 @@ class MusicController extends Controller
             $songs_db = Music::query()->get(['name', 'track_name', 'duration']);
             $count = count($songs_db);
 
-            $songs = [];
-            
             for ($i = 0; $i < $count; $i++) {
                 if (isset($songs_db[$i])) {
                     if ($user['name'] == $songs_db[$i]['name']) {

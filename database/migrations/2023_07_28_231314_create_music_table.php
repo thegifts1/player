@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -17,8 +16,8 @@ return new class extends Migration
 
             $table->string('name')->comment('Who add song');
             $table->string('track_name')->comment('With file formate');
-            $table->time('duration');
-            $table->double('size')->comment('In Megabyte');
+            $table->string('duration');
+            $table->float('size')->comment('In Megabyte');
         });
     }
 
