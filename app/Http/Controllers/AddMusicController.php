@@ -30,9 +30,9 @@ class AddMusicController extends Controller
             $getID3 = new getID3();
             $getID3->encoding = 'UTF-8';
 
-            $check = Music::query()->get(['name', 'track_name']);
+            $check = Music::query()->where('name', $user['name'])->get(['name', 'track_name']);
             $check_count = count($check);
-
+            
             for ($i = 0; $i < $file_count; $i++) {
                 $uploadedFile = $request->file('fileUpload')[$i];
 
@@ -46,7 +46,7 @@ class AddMusicController extends Controller
                 }
 
                 for ($i2 = 0; $i2 < $check_count; $i2++) {
-                    if ($check[$i2]['name'] == $user['name'] && $check[$i2]['track_name'] == $file_name) {
+                    if ($check[$i2]['track_name'] == $file_name) {
                         return redirect()->route('addMusic.index')->withErrors('You have already added a file with this name: ' . $file_name);
                     }
                 }
