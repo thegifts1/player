@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Guest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +15,10 @@ class RegisterController extends Controller
     }
 
     public function store(Request $request)
-    {
+    {   
+        $guest_ip = $_SERVER['REMOTE_ADDR'];
+        $guest = Guest::query()->where('ip_adress', "$guest_ip")->get();
+
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:50', 'unique:users'],
             'email' => ['required', 'string', 'max:50', 'email', 'unique:users'],
@@ -24,16 +28,24 @@ class RegisterController extends Controller
         if (!is_dir('../storage/app/UsersMusic/')) {
             mkdir('../storage/app/UsersMusic/');
         }
-
+         
         $user = User::query()->create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => $validated['password'],
+            'lang' => $guest[0]['lang'],
+            'darkTheme' => $guest[0]['darkTheme'],
         ]);
 
         mkdir('../storage/app/UsersMusic/' . $user['name']);
 
-        if (Auth::attempt($validated)) {
+        if (isset($request['remember'])) {
+            $remember = true;
+        } else {
+            $remember = false;
+        }
+
+        if (Auth::attempt($validated, $remember)) {
             $request->session()->regenerate();
 
             return redirect()->route('home.index');

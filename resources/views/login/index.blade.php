@@ -2,10 +2,6 @@
 
 @section('title', 'Login')
 
-@section('loginRegister.css')
-    @vite(['resources/css/loginRegister.css'])
-@endsection
-
 @section('content')
     @if ($errors->any())
         {{ $errors }}
@@ -28,8 +24,8 @@
             </form>
         </div>
 
-        <div class="login-help">
-            <a href="#">{{ __('Forgot your password?') }}</a>
+        <div class="login_help">
+            <a class="login_help_link" href="#">{{ __('Forgot your password?') }}</a>
         </div>
     </section>
 @endsection

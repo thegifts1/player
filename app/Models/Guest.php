@@ -4,12 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Music extends Model
+class Guest extends Model
 {
     protected $fillable = [
-        'name',
-        'track_name',
-        'duration',
-        'size',
+        'ip_adress',
+        'lang',
+        'darkTheme',
     ];
 }

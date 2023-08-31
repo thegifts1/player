@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Music;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth;
 
 class MusicController extends Controller
@@ -21,7 +19,7 @@ class MusicController extends Controller
         if (isset($user)) {
             $user->name = Auth::user()->name;
 
-            $songs_db = Music::query()->get(['name', 'track_name', 'duration']);
+            $songs_db = Music::query()->where('name', $user['name'])->get(['name', 'track_name', 'duration']);
             $count = count($songs_db);
 
             for ($i = 0; $i < $count; $i++) {

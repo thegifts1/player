@@ -33,8 +33,14 @@
             {{ __('Now playing: ') }}
             <?= $nowPlaying ?>
         </div>
-        <img onclick="past()" class="arrow" src="img/svg/left-arrow.svg" alt="left">
-        <img onclick="next()" class="arrow" src="img/svg/right-arrow.svg" alt="right">
+        @if (Auth::user()->darkTheme == 1)
+            <img onclick="past()" class="arrow" src="img/svg/right-arrow-white.svg" alt="left">
+            <img onclick="next()" class="arrow" src="img/svg/left-arrow-white.svg" alt="right">
+        @else
+            <img onclick="past()" class="arrow" src="img/svg/left-arrow-black.svg" alt="left">
+            <img onclick="next()" class="arrow" src="img/svg/right-arrow-black.svg" alt="right">
+        @endif
+        
         <div id="player_container">
             <audio controls autoplay id="player" class="player"
                 src="../storage/app/UsersMusic/<?= Auth::user()->name . '/' . $nowPlaying ?>"></audio>
@@ -42,13 +48,13 @@
         <table class="music_table">
             <tr class="music_head">
                 <td>{{ __('Play') }}</td>
-                <td>{{ __('Name') }}</td>
+                <td>{{ __('Track Name') }}</td>
                 <td>{{ __('Duration') }}</td>
             </tr>
             <?php for ($i = 1; $i < $counter; $i++): ?>
             <tr>
                 <td>
-                    <input onclick="buttonSong()" type="button" value="<?= $i ?>">
+                    <input class="mc_bt" onclick="buttonSong()" type="button" value="<?= $i ?>">
                 </td>
                 <td id="<?= $i ?>">
                     <?= $songs[$i]['track_name'] ?>
@@ -65,7 +71,11 @@
         @endsection
 
         @section('plyr.css')
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/plyr/3.7.8/plyr.min.css">
+            @if (Auth::user()->darkTheme == 1)
+                @vite(['resources/css/plyrDarkTheme.css'])
+            @else
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/plyr/3.7.8/plyr.min.css">
+            @endif
         @endsection
 
         @section('js')

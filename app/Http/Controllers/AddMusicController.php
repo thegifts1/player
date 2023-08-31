@@ -40,19 +40,18 @@ class AddMusicController extends Controller
 
                 $file_name = $request->file('fileUpload')[$i]->getClientOriginalName();
 
+                $extension = pathinfo($file_name = $request->file('fileUpload')[$i]->getClientOriginalName(), PATHINFO_EXTENSION);
+                if (!in_array($extension, $allowedExtensions)) {
+                    return redirect()->route('addMusic.index')->withErrors('Uploading files with this permission is prohibited');
+                }
+
                 for ($i2 = 0; $i2 < $check_count; $i2++) {
                     if ($check[$i2]['name'] == $user['name'] && $check[$i2]['track_name'] == $file_name) {
                         return redirect()->route('addMusic.index')->withErrors('You have already added a file with this name: ' . $file_name);
                     }
                 }
 
-                $extension = pathinfo($file_name = $request->file('fileUpload')[$i]->getClientOriginalName(), PATHINFO_EXTENSION);
-
-                if (!in_array($extension, $allowedExtensions)) {
-                    return redirect()->route('addMusic.index')->withErrors('Uploading files with this permission is prohibited');
-                }
-
-                $dbSong = Music::query()->create([
+                Music::query()->create([
                     'name' => $user['name'],
                     'track_name' => $file_name,
                     'duration' => $ThisFileInfo['playtime_string'],

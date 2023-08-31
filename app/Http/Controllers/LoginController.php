@@ -19,7 +19,13 @@ class LoginController extends Controller
             'password' => ['required', 'string', 'min:7', 'max:200'],
         ]);
 
-        if (Auth::attempt($validated)) {
+        if (isset($request['remember'])) {
+            $remember = true;
+        } else {
+            $remember = false;
+        }
+
+        if (Auth::attempt($validated, $remember)) {
             $request->session()->regenerate();
 
             return redirect()->route('home.index');

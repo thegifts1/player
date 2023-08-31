@@ -8,9 +8,9 @@ export default defineConfig({
         //     refresh: true,
         // }),
         laravel([
-            'resources/css/app.css',
-            'resources/css/loginRegister.css',
-            'resources/css/addMusic.css',
+            'resources/css/lightTheme.css',
+            'resources/css/darkTheme.css',
+            'resources/css/plyrDarkTheme.css',
             'resources/js/app.js',
         ])
     ],

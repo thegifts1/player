@@ -18,6 +18,8 @@ return new class extends Migration {
             $table->string('email')->unique();
             $table->boolean('active')->default(true);
             $table->boolean('admin')->default(false);
+            $table->boolean('darkTheme')->default(false);
+            $table->string('lang')->default('Eng');
 
             $table->string('password');
             $table->rememberToken();

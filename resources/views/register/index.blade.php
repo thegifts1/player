@@ -2,10 +2,6 @@
 
 @section('title', 'Register')
 
-@section('loginRegister.css')
-    @vite(['resources/css/loginRegister.css'])
-@endsection
-
 @section('content')
     @if ($errors->any())
         {{ $errors }}
