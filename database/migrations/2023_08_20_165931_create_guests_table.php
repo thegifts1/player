@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('guests', function (Blueprint $table) {
             $table->string('ip_adress')->primary();
-            $table->string('lang')->default('Eng');
+            $table->string('lang')->default('en');
             $table->string('darkTheme')->default(false);
 
             $table->timestamps();

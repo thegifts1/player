@@ -24,20 +24,14 @@ class RegisterController extends Controller
             'email' => ['required', 'string', 'max:50', 'email', 'unique:users'],
             'password' => ['required', 'string', 'min:7', 'max:200', 'confirmed'],
         ]);
-
-        if (!is_dir('../storage/app/UsersMusic/')) {
-            mkdir('../storage/app/UsersMusic/');
-        }
          
-        $user = User::query()->create([
+        User::query()->create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => $validated['password'],
             'lang' => $guest[0]['lang'],
             'darkTheme' => $guest[0]['darkTheme'],
         ]);
-
-        mkdir('../storage/app/UsersMusic/' . $user['name']);
 
         if (isset($request['remember'])) {
             $remember = true;

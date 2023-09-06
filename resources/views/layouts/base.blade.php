@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 @guest
-    <html lang="en">
+    @php
+        $guest_ip = $_SERVER['REMOTE_ADDR'];
+        $guest = App\Models\Guest::query()
+            ->where('ip_adress', "$guest_ip")
+            ->get(['darkTheme', 'lang']);
+    @endphp
+    
+    <html lang="{{ $guest[0]["lang"] }}">
 @endguest
 
 @auth
@@ -18,13 +25,6 @@
     @yield('plyr.css')
 
     @guest
-        @php
-            $guest_ip = $_SERVER['REMOTE_ADDR'];
-            $guest = App\Models\Guest::query()
-                ->where('ip_adress', "$guest_ip")
-                ->get(['darkTheme']);
-        @endphp
-
         @if ($guest[0]['darkTheme'] == 1)
             @vite(['resources/css/darkTheme.css'])
         @else

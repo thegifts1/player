@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Music;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class MusicController extends Controller
 {
@@ -19,17 +19,13 @@ class MusicController extends Controller
         if (isset($user)) {
             $user->name = Auth::user()->name;
 
-            $songs_db = Music::query()->where('name', $user['name'])->get(['name', 'track_name', 'duration']);
+            $songs_db = DB::table('music')->where('name', $user['name'])->get(['track_name', 'duration']);
             $count = count($songs_db);
 
             for ($i = 0; $i < $count; $i++) {
-                if (isset($songs_db[$i])) {
-                    if ($user['name'] == $songs_db[$i]['name']) {
-                        $songs[$i]['track_name'] = $songs_db[$i]['track_name'];
-                        $songs[$i]['duration'] = $songs_db[$i]['duration'];
-                        $counter++;
-                    }
-                }
+                $songs[$i]['track_name'] = $songs_db[$i]->track_name;
+                $songs[$i]['duration'] = $songs_db[$i]->duration;
+                $counter++;
             }
             array_unshift($songs, 0);
         }

@@ -47,7 +47,11 @@ class SettingsController extends Controller
     {
         $guest_ip = $_SERVER['REMOTE_ADDR'];
 
-        Guest::query()->where('ip_adress', "$guest_ip")->update(['lang' => $request['lang']]);
+        if ($request['lang'] == 'Rus') {
+            Guest::query()->where('ip_adress', "$guest_ip")->update(['lang' => 'ru']);
+        } else if ($request['lang'] == 'Eng') {
+            Guest::query()->where('ip_adress', "$guest_ip")->update(['lang' => 'en']);
+        }
 
         return redirect()->back();
     }
@@ -56,8 +60,12 @@ class SettingsController extends Controller
     {
         $user = new User;
         $user = Auth::user();
-
-        User::query()->where('id', $user['id'])->update(['lang' => $request['lang']]);
+        
+        if ($request['lang'] == 'Rus') {
+            User::query()->where('id', $user['id'])->update(['lang' => 'ru']);
+        } else if ($request['lang'] == 'Eng') {
+            User::query()->where('id', $user['id'])->update(['lang' => 'en']);
+        }
 
         return redirect()->back();
     }

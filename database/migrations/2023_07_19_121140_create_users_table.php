@@ -19,7 +19,7 @@ return new class extends Migration {
             $table->boolean('active')->default(true);
             $table->boolean('admin')->default(false);
             $table->boolean('darkTheme')->default(false);
-            $table->string('lang')->default('Eng');
+            $table->string('lang')->default('en');
 
             $table->string('password');
             $table->rememberToken();
